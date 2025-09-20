@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - BlackHat VPS 🚀</title>
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="logo">BlackHat VPS 🚀</div>
+    <input type="checkbox" id="menu-toggle">
+    <label for="menu-toggle" class="hamburger">&#9776;</label>
+    <ul class="nav-links">
+      <li><a href="/">Accueil</a></li>
+      <li><a href="/plans">Acheter Panel</a></li>
+      <li><a href="/coins">Acheter des pièces</a></li>
+      <li><a href="/dashboard">Dashboard</a></li>
+      <li><a href="/privacy">Confidentialité</a></li>
+      <li><a href="/terms">Conditions</a></li>
+      <li><a href="/auth/logout" class="logout-btn">Déconnexion</a></li>
+    </ul>
+  </nav>
+
+  <!-- Dashboard -->
+  <div class="dashboard-container">
+    <h1>Bienvenue, <span id="username">Utilisateur</span></h1>
+    <div class="stats">
+      <div class="stat">
+        <h2>Panels</h2>
+        <p id="panels-count">0</p>
+      </div>
+      <div class="stat">
+        <h2>Pièces</h2>
+        <p id="coins-count">0</p>
+      </div>
+    </div>
+
+    <!-- Liste des panels -->
+    <div class="panels-list">
+      <h2>Vos Panels</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Nom du panel</th>
+            <th>Type</th>
+            <th>État</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="panels-table">
+          <!-- Panels ajoutés dynamiquement -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="dashboard-actions">
+      <a href="/plans" class="btn">Acheter un panel</a>
+      <a href="/coins" class="btn">Acheter des pièces</a>
+    </div>
+  </div>
+
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>
