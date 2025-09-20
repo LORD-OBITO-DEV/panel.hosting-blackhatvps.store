@@ -24,42 +24,29 @@
 
   <main>
     <section class="panel-purchase">
-      <h1>Acheter un nouveau panel</h1>
-      <form id="buy-panel-form">
-        <label for="panel-name">Nom du panel :</label>
-        <input type="text" id="panel-name" name="panelName" placeholder="Ex: MonPanel" required>
+      <h1>Acheter un panel</h1>
+      <form id="buyPanelForm">
+        <label for="panelName">Nom du panel (optionnel)</label>
+        <input type="text" id="panelName" name="panelName" placeholder="Votre nom ou laissez vide pour défaut">
 
-        <label for="panel-language">Langage :</label>
-        <select id="panel-language" name="panelLanguage" required>
-          <option value="nodejs">NodeJS</option>
+        <label for="panelLang">Langage du panel</label>
+        <select id="panelLang" name="panelLang">
           <option value="python">Python</option>
+          <option value="nodejs">NodeJS</option>
         </select>
 
-        <label for="panel-plan">Plan :</label>
-        <select id="panel-plan" name="panelPlan" required>
-          <option value="1go">1 Go ≈ 15 points</option>
-          <option value="2go">2 Go ≈ 30 points</option>
-          <option value="5go">5 Go ≈ 75 points</option>
-          <option value="10go">10 Go ≈ 150 points</option>
-          <option value="illimite">Illimité ≈ 150 points</option>
+        <label for="panelSize">Taille du panel</label>
+        <select id="panelSize" name="panelSize">
+          <option value="1">1 Go ≈ 20 points</option>
+          <option value="2">2 Go ≈ 40 points</option>
+          <option value="5">5 Go ≈ 90 points</option>
+          <option value="10">10 Go ≈ 150 points</option>
+          <option value="illimite">Illimité ∞ ≈ 150 points</option>
         </select>
 
-        <label for="panel-duration">Durée :</label>
-        <select id="panel-duration" name="panelDuration" required>
-          <option value="7j">7 jours</option>
-          <option value="1m">1 mois</option>
-          <option value="3m">3 mois</option>
-        </select>
-
-        <label for="panel-payment">Méthode de paiement :</label>
-        <select id="panel-payment" name="panelPayment" required>
-          <option value="paypal">PayPal</option>
-          <option value="paysky">Paysky</option>
-          <option value="mobilemoney">Mobile Money</option>
-        </select>
-
-        <button type="submit" class="btn-primary">Acheter maintenant</button>
+        <button type="submit" class="btn-primary">Acheter</button>
       </form>
+      <p class="note">Le panel sera créé après paiement. Aucun panel ne peut dépasser sa limite.</p>
     </section>
   </main>
 
@@ -71,5 +58,7 @@
       Email: blackhatvps0@gmail.com
     </p>
   </footer>
+
+  <script src="public/js/buy-panel.js"></script>
 </body>
-</html>
+  </html>
