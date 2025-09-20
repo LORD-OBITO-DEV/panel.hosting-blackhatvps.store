@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard - BlackHatVPS</title>
 <link rel="stylesheet" href="/css/style.css">
+<!-- Google AdSense -->
+<script data-ad-client="ca-pub-XXXXXXXXXXXXXX" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <script src="/js/dashboard.js" defer></script>
 </head>
 <body>
@@ -19,12 +22,20 @@
 </header>
 
 <main>
-  <h2>Vos Panels</h2>
-  <div id="panelsList">
-    <!-- Liste des panels créés -->
-  </div>
+  <section id="adsTop">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-format="auto"
+         data-full-width-responsive="true"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXX"
+         data-ad-slot="1111111111"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </section>
 
-  <h2>Ajouter un Panel</h2>
+  <h2>Vos Panels</h2>
+  <div id="panelsList"></div>
+
+  <h2>Créer un Panel</h2>
   <form id="createPanelForm">
     <input type="text" name="name" placeholder="Nom du panel (optionnel)">
     <select name="size">
@@ -40,6 +51,16 @@
     </select>
     <button type="submit">Créer Panel</button>
   </form>
+
+  <section id="adsBottom">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-format="auto"
+         data-full-width-responsive="true"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXX"
+         data-ad-slot="2222222222"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </section>
 </main>
 
 <footer>
