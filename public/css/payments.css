@@ -1,0 +1,129 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background: #0a0a0a;
+  color: #00aaff;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #111;
+  padding: 10px 20px;
+  position: relative;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li {
+  margin-left: 20px;
+}
+
+.nav-links li a {
+  color: #00aaff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.logout-btn {
+  color: #ff5555;
+}
+
+.hamburger {
+  display: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #00aaff;
+}
+
+#menu-toggle {
+  display: none;
+}
+
+.payment-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: 30px auto;
+  background: #111;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,170,255,0.3);
+  text-align: center;
+}
+
+.payment-buttons {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.btn {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #fff;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.paypal {
+  background: #003087;
+}
+
+.paypal:hover {
+  background: #002060;
+}
+
+.paysky {
+  background: #00cc99;
+}
+
+.paysky:hover {
+  background: #009970;
+}
+
+.note {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #ff5555;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    background: #111;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: 200px;
+    border-radius: 0 0 0 10px;
+  }
+  .nav-links li {
+    margin: 10px 0;
+  }
+  #menu-toggle:checked + .hamburger + .nav-links {
+    display: flex;
+  }
+  .hamburger {
+    display: block;
+  }
+  .payment-buttons {
+    flex-direction: column;
+  }
+}
