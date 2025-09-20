@@ -1,0 +1,210 @@
+/* Styles généraux */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background-color: #0d1117;
+  color: #e6edf3;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: #161b22;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar .logo {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #58a6ff;
+}
+
+.hamburger {
+  display: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-links li {
+  display: inline-block;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #c9d1d9;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: #58a6ff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    background: #161b22;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    padding: 1rem;
+    width: 200px;
+  }
+  .nav-links.open {
+    display: flex;
+  }
+}
+
+/* Contenu principal */
+.main-content {
+  padding: 2rem;
+  max-width: 1100px;
+  margin: auto;
+}
+
+/* Bienvenue */
+.welcome h1 {
+  margin-bottom: 0.5rem;
+}
+
+.welcome p {
+  font-size: 1.1rem;
+  color: #8b949e;
+}
+
+/* Cartes stats */
+.stats {
+  display: flex;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.card {
+  background: #161b22;
+  padding: 1rem;
+  border-radius: 10px;
+  flex: 1;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.card h3 {
+  margin-bottom: 0.5rem;
+}
+
+.card p {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #58a6ff;
+}
+
+/* Panels Table */
+.panels table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background: #161b22;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.panels th, .panels td {
+  padding: 0.8rem;
+  text-align: left;
+  border-bottom: 1px solid #30363d;
+}
+
+.panels th {
+  background: #21262d;
+  color: #58a6ff;
+}
+
+.panels td {
+  color: #c9d1d9;
+}
+
+.status.active {
+  color: #2ecc71;
+  font-weight: bold;
+}
+.status.expired {
+  color: #e74c3c;
+  font-weight: bold;
+}
+.status.pending {
+  color: #f39c12;
+  font-weight: bold;
+}
+
+/* Points section */
+.points-options {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary, .btn-secondary {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.btn-primary {
+  background: #58a6ff;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #1f6feb;
+}
+
+.btn-secondary {
+  background: #30363d;
+  color: #c9d1d9;
+}
+
+.btn-secondary:hover {
+  background: #484f58;
+}
+
+/* Support section */
+.support ul {
+  list-style: none;
+  padding: 0;
+}
+
+.support li {
+  margin-bottom: 0.5rem;
+}
+
+.support a {
+  color: #58a6ff;
+  text-decoration: none;
+}
+
+.support a:hover {
+  text-decoration: underline;
+}
