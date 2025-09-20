@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - BlackHatVPS</title>
+<link rel="stylesheet" href="/css/style.css">
+<script src="/js/dashboard.js" defer></script>
+</head>
+<body>
+<header>
+  <h1>Bienvenue sur BlackHatVPS Dashboard</h1>
+  <p>Points disponibles: <span id="userPoints">0</span></p>
+  <nav>
+    <a href="/plans.html">Acheter Packs / Panels</a>
+    <a href="/ads.html">Regarder Pub</a>
+    <a href="/logout">Déconnexion</a>
+  </nav>
+</header>
+
+<main>
+  <h2>Vos Panels</h2>
+  <div id="panelsList">
+    <!-- Liste des panels créés -->
+  </div>
+
+  <h2>Ajouter un Panel</h2>
+  <form id="createPanelForm">
+    <input type="text" name="name" placeholder="Nom du panel (optionnel)">
+    <select name="size">
+      <option value="1Go">1 Go (15 points)</option>
+      <option value="2Go">2 Go (30 points)</option>
+      <option value="5Go">5 Go (60 points)</option>
+      <option value="10Go">10 Go (100 points)</option>
+      <option value="illimité">Illimité (150 points)</option>
+    </select>
+    <select name="language">
+      <option value="Node.js">Node.js</option>
+      <option value="Python">Python</option>
+    </select>
+    <button type="submit">Créer Panel</button>
+  </form>
+</main>
+
+<footer>
+  <p>Nos canaux :</p>
+  <ul>
+    <li><a href="https://whatsapp.com/channel/0029VbBFBxA1NCrVrBCF3g0F" target="_blank">WhatsApp Channel 1</a></li>
+    <li><a href="https://whatsapp.com/channel/0029Vb65HSyHwXbEQbQjQV26" target="_blank">WhatsApp Channel 2</a></li>
+  </ul>
+  <p>Support : WhatsApp/Telegram +2250712668494 | Email: blackhatvps0@gmail.com</p>
+  <p><a href="/privacy.html">Politique de confidentialité</a> | <a href="/cookies.html">Cookies</a></p>
+</footer>
+</body>
+</html>
