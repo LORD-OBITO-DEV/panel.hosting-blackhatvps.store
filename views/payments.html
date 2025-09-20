@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paiement - BlackHat VPS 🚀</title>
+  <link rel="stylesheet" href="/css/payments.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">BlackHat VPS 🚀</div>
+    <input type="checkbox" id="menu-toggle">
+    <label for="menu-toggle" class="hamburger">&#9776;</label>
+    <ul class="nav-links">
+      <li><a href="/">Accueil</a></li>
+      <li><a href="/plans">Acheter Panel</a></li>
+      <li><a href="/coins">Acheter des pièces</a></li>
+      <li><a href="/dashboard">Dashboard</a></li>
+      <li><a href="/privacy">Confidentialité</a></li>
+      <li><a href="/terms">Conditions</a></li>
+      <li><a href="/auth/logout" class="logout-btn">Déconnexion</a></li>
+    </ul>
+  </nav>
+
+  <div class="payment-container">
+    <h1>Paiement</h1>
+    <p>Plan / Pack choisi : <strong id="planName">Chargement...</strong></p>
+    <p>Montant à payer : <strong id="amount">...</strong></p>
+
+    <div class="payment-buttons">
+      <form action="/payments/paypal" method="POST">
+        <input type="hidden" name="plan" id="paypalPlan">
+        <button type="submit" class="btn paypal">Payer avec PayPal</button>
+      </form>
+
+      <form action="/payments/paysky" method="POST">
+        <input type="hidden" name="plan" id="payskyPlan">
+        <button type="submit" class="btn paysky">Payer avec Mobile Money</button>
+      </form>
+    </div>
+
+    <p class="note">⚠️ Paiement avant livraison. Aucun panel ne sera créé tant que le paiement n'est pas confirmé.</p>
+  </div>
+
+  <script>
+    // Récupération du plan depuis l'URL
+    const params = new URLSearchParams(window.location.search);
+    const plan = params.get('plan') || params.get('coins') || params.get('subscription');
+    document.getElementById('planName').innerText = plan;
+
+    // Exemple simple de prix automatique (adapter côté serveur réel)
+    let amount = 0;
+    switch(plan) {
+      case '1go': amount = '15 points'; break;
+      case '2go': amount = '30 points'; break;
+      case '5go': amount = '50 points'; break;
+      case '10go': amount = '90 points'; break;
+      case 'illimite': amount = '150 points'; break;
+      case '100': amount = '1€'; break;
+      case '200': amount = '2€'; break;
+      case '300': amount = '2.5€'; break;
+      case '400': amount = '4€'; break;
+      case '500': amount = '5€'; break;
+      case '200_subscription': amount = '8.99€/mois'; break;
+      default: amount = '0'; break;
+    }
+    document.getElementById('amount').innerText = amount;
+    document.getElementById('paypalPlan').value = plan;
+    document.getElementById('payskyPlan').value = plan;
+  </script>
+</body>
+</html>
