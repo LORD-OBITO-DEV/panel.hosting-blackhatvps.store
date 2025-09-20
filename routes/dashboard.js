@@ -1,18 +1,25 @@
-import express from 'express';
-import User from '../models/User.js';
-import Panel from '../models/Panel.js';
-import { ensureAuth } from '../utils/authMiddleware.js';
+import express from "express";
+import { ensureAuth } from "../middlewares/auth.js";
+import Panel from "../models/Panel.js";
+import User from "../models/User.js";
 
 const router = express.Router();
 
-// Dashboard principal
-router.get('/', ensureAuth, async (req, res) => {
-  const user = await User.findById(req.user._id).populate('panels');
-  res.json({
-    username: user.username,
-    points: user.points,
-    panels: user.panels
-  });
+// Route dashboard
+router.get("/", ensureAuth, async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const user = await User.findById(userId);
+    const panels = await Panel.find({ owner: userId });
+
+    res.render("dashboard", {
+      user,
+      panels,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Erreur serveur");
+  }
 });
 
 export default router;
