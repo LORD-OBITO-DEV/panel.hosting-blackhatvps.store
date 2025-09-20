@@ -1,68 +1,70 @@
 import express from 'express';
+import fetch from 'node-fetch';
+import { ensureAuth } from '../middlewares/auth.js';
 import User from '../models/User.js';
-import Panel from '../models/Panel.js';
-import { ensureAuth } from '../utils/authMiddleware.js';
-import axios from 'axios';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const router = express.Router();
 
-// Créer un panel
-router.post('/create', ensureAuth, async (req, res) => {
+router.post('/buy', ensureAuth, async (req, res) => {
+  const { panelName, panelLang, panelSize } = req.body;
+  const user = req.user;
+
+  // Prix en points selon la taille
+  const panelPrices = {
+    '1': 20,
+    '2': 40,
+    '5': 90,
+    '10': 150,
+    'illimite': 150
+  };
+  const pointsNeeded = panelPrices[panelSize];
+
+  if (user.points < pointsNeeded) {
+    return res.json({ success: false, message: 'Vous n’avez pas assez de points.' });
+  }
+
+  // Génère le nom du panel si vide
+  const name = panelName || user.name;
+
+  // Payload Pterodactyl
+  const pad = Math.floor(Math.random() * 10000);
+  const payload = {
+    name: name,
+    description: "Panel public auto-créé",
+    location_id: 1,
+    fqdn: `panel${pad}.blackhatvps.store`,
+    scheme: "https",
+    memory: panelSize === 'illimite' ? 0 : parseInt(panelSize) * 1024,
+    memory_overallocate: 0,
+    disk: panelSize === 'illimite' ? 0 : parseInt(panelSize) * 20000,
+    disk_overallocate: 0,
+    daemon_base: "/var/lib/pterodactyl/volumes",
+    daemon_sftp: 2022 + pad,
+    daemon_listen: 8080 + pad
+  };
+
   try {
-    const { name, size, language } = req.body;
-    const user = await User.findById(req.user._id);
+    const r = await fetch(`${process.env.PTERO_API_URL}/api/application/nodes`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${process.env.PTERO_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+    const result = await r.json();
 
-    // Définir nom par défaut si non fourni
-    const panelName = name || user.username;
-
-    // Déterminer points nécessaires selon taille
-    let pointsNeeded = 0;
-    switch(size){
-      case '1Go': pointsNeeded = 15; break;
-      case '2Go': pointsNeeded = 30; break;
-      case '5Go': pointsNeeded = 60; break;
-      case '10Go': pointsNeeded = 100; break;
-      case 'illimité': pointsNeeded = 150; break;
-      default: return res.status(400).json({ error: 'Taille invalide' });
-    }
-
-    if(user.points < pointsNeeded){
-      return res.status(400).json({ error: 'Points insuffisants' });
-    }
-
-    // Déduire points
+    // Retire les points de l'utilisateur
     user.points -= pointsNeeded;
+    user.panels.push({ name: payload.name, fqdn: payload.fqdn, lang: panelLang });
     await user.save();
 
-    // Créer panel via Pterodactyl API
-    const payload = {
-      name: panelName,
-      user: process.env.PTERO_ADMIN_USER, // user unique sur Pterodactyl
-      size,
-      language
-    };
-
-    const response = await axios.post(`${process.env.PTERO_API_URL}/api/application/panels`, payload, {
-      headers: { Authorization: `Bearer ${process.env.PTERO_API_KEY}` }
-    });
-
-    // Enregistrer dans MongoDB
-    const panel = new Panel({
-      owner: user._id,
-      name: panelName,
-      size,
-      language,
-      pointsUsed: pointsNeeded
-    });
-    await panel.save();
-
-    user.panels.push(panel._id);
-    await user.save();
-
-    res.json({ success: true, panel });
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: 'Erreur lors de la création du panel' });
+    return res.json({ success: true, panelUrl: `https://${payload.fqdn}` });
+  } catch (err) {
+    console.error(err);
+    return res.json({ success: false, message: 'Impossible de créer le panel.' });
   }
 });
 
