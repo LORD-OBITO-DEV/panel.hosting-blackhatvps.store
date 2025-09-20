@@ -1,0 +1,129 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background: #0a0a0a;
+  color: #00aaff;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #111;
+  padding: 10px 20px;
+  position: relative;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li {
+  margin-left: 20px;
+}
+
+.nav-links li a {
+  color: #00aaff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.logout-btn {
+  color: #ff5555;
+}
+
+.hamburger {
+  display: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #00aaff;
+}
+
+#menu-toggle {
+  display: none;
+}
+
+.dashboard-container {
+  padding: 20px;
+}
+
+.stats {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.stat {
+  background: #111;
+  padding: 20px;
+  border-radius: 10px;
+  flex: 1;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(0, 170, 255, 0.3);
+}
+
+.panels-list {
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th, table td {
+  border: 1px solid #00aaff;
+  padding: 10px;
+  text-align: center;
+}
+
+.dashboard-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 10px 20px;
+  background: #00aaff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #0088cc;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    background: #111;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: 200px;
+    border-radius: 0 0 0 10px;
+  }
+  .nav-links li {
+    margin: 10px 0;
+  }
+  #menu-toggle:checked + .hamburger + .nav-links {
+    display: flex;
+  }
+  .hamburger {
+    display: block;
+  }
+}
