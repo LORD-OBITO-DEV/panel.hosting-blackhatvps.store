@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscription - BlackHat VPS 🚀</title>
+  <link rel="stylesheet" href="/css/signup.css">
+</head>
+<body>
+  <div class="signup-container">
+    <h1>BlackHat VPS 🚀</h1>
+    <p>Créez votre compte</p>
+
+    <!-- Formulaire classique -->
+    <form action="/auth/signup" method="POST">
+      <input type="text" name="username" placeholder="Nom d'utilisateur" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="password" name="password" placeholder="Mot de passe" required>
+      <button type="submit">S'inscrire</button>
+    </form>
+
+    <div class="separator">OU</div>
+
+    <!-- Inscription Google -->
+    <a href="/auth/google" class="google-btn">
+      <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo">
+      S'inscrire avec Google
+    </a>
+
+    <p class="login-link">Déjà un compte ? <a href="/login">Connectez-vous</a></p>
+  </div>
+</body>
+</html>
