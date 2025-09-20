@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion - BlackHat VPS 🚀</title>
+  <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+  <div class="login-container">
+    <h1>BlackHat VPS 🚀</h1>
+    <p>Connectez-vous à votre compte</p>
+
+    <!-- Formulaire classique -->
+    <form action="/auth/login" method="POST">
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="password" name="password" placeholder="Mot de passe" required>
+      <button type="submit">Se connecter</button>
+    </form>
+
+    <div class="separator">OU</div>
+
+    <!-- Connexion Google -->
+    <a href="/auth/google" class="google-btn">
+      <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo">
+      Se connecter avec Google
+    </a>
+
+    <p class="signup-link">Pas encore de compte ? <a href="/signup">Inscrivez-vous</a></p>
+  </div>
+</body>
+</html>
