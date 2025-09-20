@@ -1,12 +1,15 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const UserSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   username: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  googleId: { type: String },
-  points: { type: Number, default: 0 },
-  panels: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Panel' }],
-  createdAt: { type: Date, default: Date.now }
-});
+  pseudo: { type: String },
+  email: { type: String, required: true },
+  coins: { type: Number, default: 0 },
+  subscription: { type: String },
+  language: { type: String, default: "NodeJS" },
+  adsWatched: { type: Number, default: 0 },
+  adsCoins: { type: Number, default: 0 },
+  googleId: { type: String }, // pour login Google
+}, { timestamps: true });
 
-export default mongoose.model('User', UserSchema);
+export default mongoose.model("User", userSchema);
