@@ -1,9 +1,12 @@
-/* Styles généraux */
+/* =====================
+   Black Hat VPS - Styles
+   ===================== */
+
 body {
   margin: 0;
-  font-family: 'Segoe UI', Tahoma, sans-serif;
-  background-color: #0d1117;
-  color: #e6edf3;
+  font-family: Arial, sans-serif;
+  background: #0a0a0f;
+  color: #fff;
 }
 
 /* Navbar */
@@ -11,200 +14,155 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
-  background: #161b22;
-  color: white;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  padding: 15px 30px;
+  background: #0d0d1a;
+  border-bottom: 2px solid #1e90ff;
 }
 
 .navbar .logo {
-  font-size: 1.2rem;
+  font-size: 22px;
   font-weight: bold;
-  color: #58a6ff;
-}
-
-.hamburger {
-  display: none;
-  font-size: 1.5rem;
-  cursor: pointer;
+  color: #1e90ff;
 }
 
 .nav-links {
   list-style: none;
   display: flex;
-  gap: 1rem;
+  gap: 20px;
 }
 
-.nav-links li {
-  display: inline-block;
-}
-
-.nav-links a {
+.nav-links li a {
   text-decoration: none;
-  color: #c9d1d9;
+  color: #fff;
+  font-weight: 500;
   transition: color 0.3s;
 }
 
-.nav-links a:hover,
-.nav-links a.active {
-  color: #58a6ff;
+.nav-links li a:hover {
+  color: #1e90ff;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .hamburger {
-    display: block;
-  }
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    background: #161b22;
-    position: absolute;
-    top: 60px;
-    right: 0;
-    padding: 1rem;
-    width: 200px;
-  }
-  .nav-links.open {
-    display: flex;
-  }
+.auth-btn .btn {
+  padding: 8px 15px;
+  background: #1e90ff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background 0.3s;
 }
 
-/* Contenu principal */
-.main-content {
-  padding: 2rem;
-  max-width: 1100px;
-  margin: auto;
+.auth-btn .btn:hover {
+  background: #0a6fd8;
 }
 
-/* Bienvenue */
-.welcome h1 {
-  margin-bottom: 0.5rem;
-}
-
-.welcome p {
-  font-size: 1.1rem;
-  color: #8b949e;
-}
-
-/* Cartes stats */
-.stats {
-  display: flex;
-  gap: 1rem;
-  margin: 2rem 0;
-}
-
-.card {
-  background: #161b22;
-  padding: 1rem;
-  border-radius: 10px;
-  flex: 1;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-}
-
-.card h3 {
-  margin-bottom: 0.5rem;
-}
-
-.card p {
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: #58a6ff;
-}
-
-/* Panels Table */
-.panels table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-  background: #161b22;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.panels th, .panels td {
-  padding: 0.8rem;
-  text-align: left;
-  border-bottom: 1px solid #30363d;
-}
-
-.panels th {
-  background: #21262d;
-  color: #58a6ff;
-}
-
-.panels td {
-  color: #c9d1d9;
-}
-
-.status.active {
-  color: #2ecc71;
-  font-weight: bold;
-}
-.status.expired {
-  color: #e74c3c;
-  font-weight: bold;
-}
-.status.pending {
-  color: #f39c12;
-  font-weight: bold;
-}
-
-/* Points section */
-.points-options {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-  flex-wrap: wrap;
-}
-
-.btn-primary, .btn-secondary {
-  display: inline-block;
-  margin-top: 0.5rem;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  border: none;
+.burger {
+  display: none;
+  font-size: 26px;
   cursor: pointer;
+  color: #fff;
+}
+
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.hero h1 {
+  font-size: 40px;
+  color: #1e90ff;
+}
+
+.hero p {
+  font-size: 18px;
+  margin: 15px 0;
+}
+
+.btn-primary {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 25px;
+  background: #1e90ff;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #fff;
   font-weight: bold;
   transition: background 0.3s;
 }
 
-.btn-primary {
-  background: #58a6ff;
-  color: white;
-}
-
 .btn-primary:hover {
-  background: #1f6feb;
+  background: #0a6fd8;
 }
 
-.btn-secondary {
-  background: #30363d;
-  color: #c9d1d9;
+/* Footer */
+footer {
+  margin-top: 60px;
+  padding: 15px;
+  text-align: center;
+  background: #0d0d1a;
+  border-top: 2px solid #1e90ff;
+  font-size: 14px;
 }
 
-.btn-secondary:hover {
-  background: #484f58;
+/* Forms (login/signup) */
+.form-container {
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 25px;
+  background: #0d0d1a;
+  border: 1px solid #1e90ff;
+  border-radius: 8px;
+  text-align: center;
 }
 
-/* Support section */
-.support ul {
-  list-style: none;
-  padding: 0;
+.form-container h2 {
+  margin-bottom: 20px;
+  color: #1e90ff;
 }
 
-.support li {
-  margin-bottom: 0.5rem;
+.form-container input {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
 }
 
-.support a {
-  color: #58a6ff;
-  text-decoration: none;
+.form-container button {
+  width: 95%;
+  padding: 12px;
+  background: #1e90ff;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
 }
 
-.support a:hover {
-  text-decoration: underline;
+.form-container button:hover {
+  background: #0a6fd8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    background: #0d0d1a;
+    position: absolute;
+    top: 70px;
+    right: 0;
+    width: 200px;
+    padding: 20px;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .burger {
+    display: block;
+  }
 }
