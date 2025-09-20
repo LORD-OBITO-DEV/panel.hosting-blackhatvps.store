@@ -4,73 +4,122 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard - BlackHatVPS</title>
-<link rel="stylesheet" href="/css/style.css">
-<!-- Google AdSense -->
-<script data-ad-client="ca-pub-XXXXXXXXXXXXXX" async
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<script src="/js/dashboard.js" defer></script>
+<link rel="stylesheet" href="/style.css">
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
 <header>
-  <h1>Bienvenue sur BlackHatVPS Dashboard</h1>
-  <p>Points disponibles: <span id="userPoints">0</span></p>
+  <h1>BlackHatVPS Dashboard</h1>
   <nav>
-    <a href="/plans.html">Acheter Packs / Panels</a>
-    <a href="/ads.html">Regarder Pub</a>
+    <a href="/">Accueil</a>
+    <a href="/packs">Acheter Points</a>
+    <a href="/panels">Créer Panel</a>
+    <a href="/support">Support</a>
     <a href="/logout">Déconnexion</a>
   </nav>
 </header>
 
 <main>
-  <section id="adsTop">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-format="auto"
-         data-full-width-responsive="true"
-         data-ad-client="ca-pub-XXXXXXXXXXXXXX"
-         data-ad-slot="1111111111"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </section>
+<section id="userInfo">
+  <h2>Bienvenue, <span id="username">Utilisateur</span></h2>
+  <p>Points disponibles : <span id="points">0</span></p>
+</section>
 
+<section id="adsSection">
+  <h2>Regarder une publicité</h2>
+  <button id="watchAd">Regarder pub (+2 points)</button>
+  <p id="adTimer"></p>
+</section>
+
+<section id="panelList">
   <h2>Vos Panels</h2>
-  <div id="panelsList"></div>
+  <div id="panelsGrid">
+    <!-- Panels seront injectés ici via JS -->
+  </div>
+</section>
 
-  <h2>Créer un Panel</h2>
-  <form id="createPanelForm">
-    <input type="text" name="name" placeholder="Nom du panel (optionnel)">
-    <select name="size">
-      <option value="1Go">1 Go (15 points)</option>
-      <option value="2Go">2 Go (30 points)</option>
-      <option value="5Go">5 Go (60 points)</option>
-      <option value="10Go">10 Go (100 points)</option>
-      <option value="illimité">Illimité (150 points)</option>
-    </select>
-    <select name="language">
-      <option value="Node.js">Node.js</option>
-      <option value="Python">Python</option>
-    </select>
-    <button type="submit">Créer Panel</button>
-  </form>
-
-  <section id="adsBottom">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-format="auto"
-         data-full-width-responsive="true"
-         data-ad-client="ca-pub-XXXXXXXXXXXXXX"
-         data-ad-slot="2222222222"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </section>
-</main>
+<section id="buySection">
+  <h2>Acheter Points / Panels</h2>
+  <div id="packs">
+    <button data-points="100">100 points → 1€</button>
+    <button data-points="200">200 points → 2€</button>
+    <button data-points="300">300 points → 2.5€</button>
+    <button data-points="400">400 points → 4€</button>
+    <button data-points="500">500 points → 5€</button>
+    <button data-points="weekly">200 points / semaine → 8.99€/mois</button>
+  </div>
+  <div id="panelsBuy">
+    <button data-panel="15">Panel 1Go → 15 points</button>
+    <button data-panel="30">Panel 2Go → 30 points</button>
+    <button data-panel="60">Panel 4Go → 60 points</button>
+    <button data-panel="100">Panel 8Go → 100 points</button>
+    <button data-panel="150">Panel Illimité → 150 points</button>
+  </div>
+</section>
 
 <footer>
-  <p>Nos canaux :</p>
+  <p>&copy; 2025 BlackHatVPS</p>
   <ul>
-    <li><a href="https://whatsapp.com/channel/0029VbBFBxA1NCrVrBCF3g0F" target="_blank">WhatsApp Channel 1</a></li>
-    <li><a href="https://whatsapp.com/channel/0029Vb65HSyHwXbEQbQjQV26" target="_blank">WhatsApp Channel 2</a></li>
+    <li><a href="https://whatsapp.com/channel/0029VbBFBxA1NCrVrBCF3g0F">Canal WhatsApp 1</a></li>
+    <li><a href="https://whatsapp.com/channel/0029Vb65HSyHwXbEQbQjQV26">Canal WhatsApp 2</a></li>
+    <li><a href="mailto:blackhatvps0@gmail.com">Email Support</a></li>
   </ul>
-  <p>Support : WhatsApp/Telegram +2250712668494 | Email: blackhatvps0@gmail.com</p>
-  <p><a href="/privacy.html">Politique de confidentialité</a> | <a href="/cookies.html">Cookies</a></p>
 </footer>
+
+<script>
+// Simulation de données utilisateur
+let user = {
+  username: "Jean",
+  points: 50,
+  panels: [
+    {name:"Panel1", size:"1Go", expires:"2025-09-27"},
+    {name:"Panel2", size:"2Go", expires:"2025-09-28"}
+  ]
+};
+
+document.getElementById("username").innerText = user.username;
+document.getElementById("points").innerText = user.points;
+
+// Afficher panels
+const panelsGrid = document.getElementById("panelsGrid");
+user.panels.forEach(p => {
+  const div = document.createElement("div");
+  div.className = "panel-card";
+  div.innerHTML = `<h3>${p.name}</h3><p>Taille: ${p.size}</p><p>Expire: ${p.expires}</p>`;
+  panelsGrid.appendChild(div);
+});
+
+// Bouton regarder pub + compteur
+const watchBtn = document.getElementById("watchAd");
+watchBtn.addEventListener("click", () => {
+  let timer = 10; // secondes
+  watchBtn.disabled = true;
+  const adTimer = document.getElementById("adTimer");
+  const interval = setInterval(() => {
+    adTimer.innerText = `Publicité en cours: ${timer}s`;
+    timer--;
+    if(timer < 0){
+      clearInterval(interval);
+      adTimer.innerText = "Vous avez gagné 2 points !";
+      user.points += 2;
+      document.getElementById("points").innerText = user.points;
+      watchBtn.disabled = false;
+    }
+  }, 1000);
+});
+
+// Acheter points / panels (simulé)
+document.querySelectorAll("#packs button").forEach(btn=>{
+  btn.addEventListener("click", () => {
+    alert(`Redirection vers paiement pour ${btn.dataset.points} points`);
+  });
+});
+
+document.querySelectorAll("#panelsBuy button").forEach(btn=>{
+  btn.addEventListener("click", () => {
+    alert(`Redirection vers paiement pour panel ${btn.dataset.panel} points`);
+  });
+});
+</script>
 </body>
-</html>
+        </html>
