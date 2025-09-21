@@ -1,63 +1,29 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const packsDiv = document.getElementById('packs');
-  const weeklyBtn = document.getElementById('weeklySub');
-  const panelPlansDiv = document.getElementById('panelPlans');
-  let userPoints = parseInt(localStorage.getItem('userPoints')) || 0;
+// routes/plans.js
+import express from 'express';
+import User from '../models/User.js';
 
-  // Affichage des points
-  function updatePointsDisplay() {
-    document.getElementById('userPoints')?.textContent = userPoints;
+const router = express.Router();
+
+// Route pour afficher les plans et les points de l'utilisateur
+router.get('/', async (req, res) => {
+  try {
+    const user = req.user; // récupéré par passport.js
+    if (!user) return res.redirect('/login');
+
+    // Exemple de plans (tu peux modifier les prix ou points)
+    const plans = [
+      { name: "100 Points", points: 100, price: 1 },
+      { name: "200 Points", points: 200, price: 2 },
+      { name: "300 Points", points: 300, price: 2.5 },
+      { name: "400 Points", points: 400, price: 4 },
+      { name: "500 Points", points: 500, price: 5 }
+    ];
+
+    res.render('plans', { userPoints: user.points, plans });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Erreur serveur");
   }
-  updatePointsDisplay();
-
-  // Fonction pour lancer le paiement
-  function pay(points, type) {
-    // Ouvre la page de paiement correspondante
-    // Pour l'instant, simulé par alert
-    const confirmPay = confirm(`Voulez-vous payer pour ${points} points via votre méthode de paiement ?`);
-    if(confirmPay){
-      fetch('/payment/create', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ points, type })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if(data.success){
-          alert(`Redirection vers le paiement : ${data.paymentUrl}`);
-        } else {
-          alert(`Erreur : ${data.message}`);
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        alert('Erreur réseau, réessayez plus tard.');
-      });
-    }
-  }
-
-  // Événements pour packs
-  packsDiv.querySelectorAll('button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const points = parseInt(btn.dataset.points);
-      pay(points, 'points');
-    });
-  });
-
-  // Événement abonnement hebdo
-  weeklyBtn?.addEventListener('click', () => {
-    pay(200, 'weekly'); // 200p/semaine → 8.99€/mois
-  });
-
-  // Panels plans
-  panelPlansDiv.querySelectorAll('p').forEach(p => {
-    p.addEventListener('click', () => {
-      const text = p.textContent;
-      const match = text.match(/→ (\d+)p/);
-      if(match){
-        const points = parseInt(match[1]);
-        pay(points, 'panel');
-      }
-    });
-  });
 });
+
+export default router;
