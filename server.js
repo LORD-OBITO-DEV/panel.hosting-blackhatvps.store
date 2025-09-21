@@ -7,6 +7,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 // Routes
+import authRoutes from "./routes/auth.js";
+app.use("/auth", authRoutes);
 import dashboardRoutes from "./routes/dashboard.js";
 import panelsRoutes from "./routes/panels.js";
 import paymentsRoutes from "./routes/payments.js";
