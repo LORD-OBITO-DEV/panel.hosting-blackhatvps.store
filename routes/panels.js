@@ -1,70 +1,67 @@
-import express from 'express';
-import fetch from 'node-fetch';
-import { ensureAuth } from '../middlewares/auth.js';
-import User from '../models/User.js';
-import dotenv from 'dotenv';
-dotenv.config();
+import express from "express";
+import fetch from "node-fetch";
+import { ensureAuth } from "../middlewares/auth.js";
 
 const router = express.Router();
 
-router.post('/buy', ensureAuth, async (req, res) => {
-  const { panelName, panelLang, panelSize } = req.body;
-  const user = req.user;
-
-  // Prix en points selon la taille
-  const panelPrices = {
-    '1': 20,
-    '2': 40,
-    '5': 90,
-    '10': 150,
-    'illimite': 150
-  };
-  const pointsNeeded = panelPrices[panelSize];
-
-  if (user.points < pointsNeeded) {
-    return res.json({ success: false, message: 'Vous n’avez pas assez de points.' });
-  }
-
-  // Génère le nom du panel si vide
-  const name = panelName || user.name;
-
-  // Payload Pterodactyl
-  const pad = Math.floor(Math.random() * 10000);
-  const payload = {
-    name: name,
-    description: "Panel public auto-créé",
-    location_id: 1,
-    fqdn: `panel${pad}.blackhatvps.store`,
-    scheme: "https",
-    memory: panelSize === 'illimite' ? 0 : parseInt(panelSize) * 1024,
-    memory_overallocate: 0,
-    disk: panelSize === 'illimite' ? 0 : parseInt(panelSize) * 20000,
-    disk_overallocate: 0,
-    daemon_base: "/var/lib/pterodactyl/volumes",
-    daemon_sftp: 2022 + pad,
-    daemon_listen: 8080 + pad
-  };
+// Créer un panel via l’API Pterodactyl
+router.post("/create", ensureAuth, async (req, res) => {
+  const { planId } = req.body;
 
   try {
-    const r = await fetch(`${process.env.PTERO_API_URL}/api/application/nodes`, {
-      method: 'POST',
+    // Ex: charger le plan depuis DB (stockage, CPU, RAM)
+    // ici exemple simplifié :
+    const plans = {
+      "basic": { cpu: 50, ram: 1024, disk: 5000 },
+      "pro": { cpu: 100, ram: 2048, disk: 10000 },
+      "ultra": { cpu: 200, ram: 4096, disk: 20000 }
+    };
+
+    const plan = plans[planId];
+    if (!plan) return res.json({ success: false, message: "Plan invalide" });
+
+    const response = await fetch(`${process.env.PTERO_API_URL}/api/application/servers`, {
+      method: "POST",
       headers: {
-        Authorization: `Bearer ${process.env.PTERO_API_KEY}`,
-        'Content-Type': 'application/json'
+        "Authorization": `Bearer ${process.env.PTERO_API_KEY}`,
+        "Content-Type": "application/json",
+        "Accept": "application/json",
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify({
+        name: `${req.user.name}-panel`,
+        user: req.user.pteroId || 1,
+        egg: 5, // ex: NodeJS egg
+        docker_image: "ghcr.io/pterodactyl/yolks:nodejs_18",
+        startup: "npm start",
+        environment: {},
+        limits: {
+          memory: plan.ram,
+          swap: 0,
+          disk: plan.disk,
+          io: 500,
+          cpu: plan.cpu,
+        },
+        feature_limits: {
+          databases: 1,
+          backups: 1,
+          allocations: 1,
+        },
+        allocation: {
+          default: 1,
+        },
+      }),
     });
-    const result = await r.json();
 
-    // Retire les points de l'utilisateur
-    user.points -= pointsNeeded;
-    user.panels.push({ name: payload.name, fqdn: payload.fqdn, lang: panelLang });
-    await user.save();
+    if (!response.ok) {
+      const err = await response.json();
+      return res.json({ success: false, message: err });
+    }
 
-    return res.json({ success: true, panelUrl: `https://${payload.fqdn}` });
+    const server = await response.json();
+    return res.json({ success: true, server });
   } catch (err) {
-    console.error(err);
-    return res.json({ success: false, message: 'Impossible de créer le panel.' });
+    console.error("Erreur création panel :", err);
+    res.json({ success: false, message: "Erreur serveur" });
   }
 });
 
