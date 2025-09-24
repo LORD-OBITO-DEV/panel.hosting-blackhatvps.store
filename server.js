@@ -8,7 +8,6 @@ import { fileURLToPath } from "url";
 
 // Routes
 import authRoutes from "./routes/auth.js";
-app.use("/auth", authRoutes);
 import dashboardRoutes from "./routes/dashboard.js";
 import panelsRoutes from "./routes/panels.js";
 import paymentsRoutes from "./routes/payments.js";
@@ -46,6 +45,7 @@ app.use(passport.session());
 app.use("/public", express.static(path.join(__dirname, "public")));
 
 // Routes
+app.use("/auth", authRoutes);
 app.use("/", dashboardRoutes);
 app.use("/panels", panelsRoutes);
 app.use("/payments", paymentsRoutes);
