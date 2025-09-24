@@ -1,52 +1,41 @@
-// Import des modules principaux
 import express from "express";
-import session from "express-session";
-import mongoose from "mongoose";
 import passport from "passport";
-import dotenv from "dotenv";
-import path from "path";
-import { fileURLToPath } from "url";
+import User from "../models/User.js"; // ton modèle utilisateur
+import bcrypt from "bcryptjs";
 
-// Import des routes
-import authRoutes from "./routes/auth.js";
-import dashboardRoutes from "./routes/dashboard.js";
-import panelsRoutes from "./routes/panels.js";
-import paymentsRoutes from "./routes/payments.js";
-import plansRoutes from "./routes/plans.js";
+const router = express.Router();
 
-// Configuration des variables d'environnement
-dotenv.config();
+// Page login (GET)
+router.get("/login", (req, res) => {
+  res.sendFile("login.html", { root: "./views/auth" }); // ton login.html
+});
 
-// Pour pouvoir utiliser __dirname en ES module
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Page signup (GET)
+router.get("/signup", (req, res) => {
+  res.sendFile("signup.html", { root: "./views/auth" }); // ton signup.html
+});
 
-// Création de l'app Express
-const app = express();
+// Signup (POST)
+router.post("/signup", async (req, res) => {
+  const { email, password } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
 
-// Connexion à MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log("MongoDB connected"))
-.catch(err => console.log("MongoDB connection error:", err));
+  try {
+    const user = new User({ email, password: hashedPassword });
+    await user.save();
+    res.redirect("/auth/login");
+  } catch (err) {
+    res.status(500).send("Erreur lors de l'inscription");
+  }
+});
 
-// Middlewares pour parser le body
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Login (POST)
+router.post("/login",
+  passport.authenticate("local", {
+    successRedirect: "/dashboard",
+    failureRedirect: "/auth/login",
+    failureFlash: false
+  })
+);
 
-// Session Express
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: true
-}));
-
-// Passport
-import "./config/passport.js"; // configure passport-local
-app.use(passport.initialize());
-app.use(passport.session());
-
-// Fichiers statiques
-app.use("/public", express.static(path.join(__dirname, "public")));
+export default router;
