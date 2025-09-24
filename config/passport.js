@@ -1,21 +1,35 @@
+// config/passport.js
 import passport from "passport";
-import { Strategy as LocalStrategy } from "passport-local";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import User from "../models/User.js";
 
 passport.use(
-  new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {
-    try {
-      const user = await User.findOne({ email });
-      if (!user) return done(null, false, { message: "Utilisateur non trouvé" });
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: process.env.GOOGLE_CALLBACK_URL,
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        let user = await User.findOne({ googleId: profile.id });
 
-      const isMatch = await user.comparePassword(password);
-      if (!isMatch) return done(null, false, { message: "Mot de passe incorrect" });
+        if (!user) {
+          user = new User({
+            googleId: profile.id,
+            name: profile.displayName,
+            email: profile.emails?.[0]?.value || "",
+            avatar: profile.photos?.[0]?.value || "",
+          });
+          await user.save();
+        }
 
-      return done(null, user);
-    } catch (err) {
-      return done(err);
+        return done(null, user);
+      } catch (err) {
+        return done(err, null);
+      }
     }
-  })
+  )
 );
 
 passport.serializeUser((user, done) => {
