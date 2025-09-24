@@ -1,37 +1,52 @@
+// Import des modules principaux
 import express from "express";
-import bcrypt from "bcryptjs";
-import User from "../models/User.js"; // Ton modèle utilisateur
+import session from "express-session";
+import mongoose from "mongoose";
 import passport from "passport";
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const router = express.Router();
+// Import des routes
+import authRoutes from "./routes/auth.js";
+import dashboardRoutes from "./routes/dashboard.js";
+import panelsRoutes from "./routes/panels.js";
+import paymentsRoutes from "./routes/payments.js";
+import plansRoutes from "./routes/plans.js";
 
-// Page d'inscription (GET)
-router.get("/signup", (req, res) => {
-  res.sendFile("signup.html", { root: "./views" }); // chemin vers ton fichier signup.html
-});
+// Configuration des variables d'environnement
+dotenv.config();
 
-// Traitement de l'inscription (POST)
-router.post("/signup", async (req, res) => {
-  const { email, password } = req.body;
+// Pour pouvoir utiliser __dirname en ES module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-  try {
-    // Vérifie si l'utilisateur existe déjà
-    const existingUser = await User.findOne({ email });
-    if (existingUser) return res.redirect("/auth/signup"); // tu peux ajouter un message d'erreur
+// Création de l'app Express
+const app = express();
 
-    // Hash du mot de passe
-    const hashedPassword = await bcrypt.hash(password, 10);
+// Connexion à MongoDB
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log("MongoDB connected"))
+.catch(err => console.log("MongoDB connection error:", err));
 
-    // Création de l'utilisateur
-    const newUser = new User({ email, password: hashedPassword });
-    await newUser.save();
+// Middlewares pour parser le body
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-    // Rediriger vers login après inscription
-    res.redirect("/auth/login");
-  } catch (err) {
-    console.error(err);
-    res.redirect("/auth/signup");
-  }
-});
+// Session Express
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true
+}));
 
-export default router;
+// Passport
+import "./config/passport.js"; // configure passport-local
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Fichiers statiques
+app.use("/public", express.static(path.join(__dirname, "public")));
