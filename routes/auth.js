@@ -1,24 +1,37 @@
 import express from "express";
+import bcrypt from "bcryptjs";
+import User from "../models/User.js"; // Ton modèle utilisateur
 import passport from "passport";
 
 const router = express.Router();
 
-// Page de login (GET)
-router.get("/login", (req, res) => {
-  res.sendFile("login.html", { root: "./views" }); // mettre le chemin vers ton fichier login.html
+// Page d'inscription (GET)
+router.get("/signup", (req, res) => {
+  res.sendFile("signup.html", { root: "./views" }); // chemin vers ton fichier signup.html
 });
 
-// Traitement du login (POST)
-router.post("/login", passport.authenticate("local", {
-  successRedirect: "/",    // où rediriger après login réussi
-  failureRedirect: "/auth/login" // où rediriger si échec
-}));
+// Traitement de l'inscription (POST)
+router.post("/signup", async (req, res) => {
+  const { email, password } = req.body;
 
-// Déconnexion
-router.get("/logout", (req, res) => {
-  req.logout(() => {
+  try {
+    // Vérifie si l'utilisateur existe déjà
+    const existingUser = await User.findOne({ email });
+    if (existingUser) return res.redirect("/auth/signup"); // tu peux ajouter un message d'erreur
+
+    // Hash du mot de passe
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Création de l'utilisateur
+    const newUser = new User({ email, password: hashedPassword });
+    await newUser.save();
+
+    // Rediriger vers login après inscription
     res.redirect("/auth/login");
-  });
+  } catch (err) {
+    console.error(err);
+    res.redirect("/auth/signup");
+  }
 });
 
 export default router;
