@@ -3,22 +3,21 @@ import passport from "passport";
 
 const router = express.Router();
 
-// Connexion Google
-router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));
+// Page de login (GET)
+router.get("/login", (req, res) => {
+  res.sendFile("login.html", { root: "./views" }); // mettre le chemin vers ton fichier login.html
+});
 
-// Callback Google
-router.get("/google/callback",
-  passport.authenticate("google", {
-    failureRedirect: "/login",
-    successRedirect: "/dashboard"
-  })
-);
+// Traitement du login (POST)
+router.post("/login", passport.authenticate("local", {
+  successRedirect: "/",    // où rediriger après login réussi
+  failureRedirect: "/auth/login" // où rediriger si échec
+}));
 
 // Déconnexion
 router.get("/logout", (req, res) => {
-  req.logout(err => {
-    if(err) return console.error(err);
-    res.redirect("/");
+  req.logout(() => {
+    res.redirect("/auth/login");
   });
 });
 
