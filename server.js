@@ -67,7 +67,7 @@ app.get("/cookies", (req, res) => res.sendFile(path.join(__dirname, "cookies.htm
 
 // Page d'accueil publique
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
 // Démarrage du serveur
