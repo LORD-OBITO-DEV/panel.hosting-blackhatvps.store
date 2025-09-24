@@ -13,9 +13,6 @@ import panelsRoutes from "./routes/panels.js";
 import paymentsRoutes from "./routes/payments.js";
 import plansRoutes from "./routes/plans.js";
 
-// Middleware pour protéger les routes
-import { ensureAuth } from "./middleware/ensureAuth.js";
-
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -48,33 +45,31 @@ app.use(passport.session());
 // Serve static files
 app.use("/public", express.static(path.join(__dirname, "public")));
 
-// ---------------------
-// Routes publiques
-// ---------------------
+// --- Routes publiques ---
+app.use("/auth", authRoutes);
 
-// Home page publique
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
-});
+// Middleware pour protéger les routes privées
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) return next();
+  res.redirect("/auth/login");
+}
 
-// Legal pages
+// Routes protégées
+app.use("/dashboard", ensureAuthenticated, dashboardRoutes);
+app.use("/panels", ensureAuthenticated, panelsRoutes);
+app.use("/payments", ensureAuthenticated, paymentsRoutes);
+app.use("/plans", ensureAuthenticated, plansRoutes);
+
+// Pages légales
 app.get("/privacy", (req, res) => res.sendFile(path.join(__dirname, "privacy.html")));
 app.get("/terms", (req, res) => res.sendFile(path.join(__dirname, "terms.html")));
 app.get("/cookies", (req, res) => res.sendFile(path.join(__dirname, "cookies.html")));
 
-// Auth routes (login / signup)
-app.use("/auth", authRoutes);
+// Page d'accueil publique
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
 
-// ---------------------
-// Routes protégées (login requis)
-// ---------------------
-app.use("/dashboard", ensureAuth, dashboardRoutes);
-app.use("/panels", ensureAuth, panelsRoutes);
-app.use("/payments", ensureAuth, paymentsRoutes);
-app.use("/plans", ensureAuth, plansRoutes);
-
-// ---------------------
-// Start server
-// ---------------------
+// Démarrage du serveur
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
